@@ -1,0 +1,67 @@
+.agent-assignment {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  width: 100%;
+}
+
+.agent-assignment-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #cbd5e1;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.agent-assignment-label svg {
+  color: #fb923c;
+}
+
+.agent-assignment-select-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.agent-assignment-select-wrap select {
+  width: 100%;
+  appearance: none;
+  padding: 11px 36px 11px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  outline: none;
+  background: #151922;
+  color: #f3f4f6;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.agent-assignment-select-wrap select:focus {
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
+}
+
+.agent-assignment-select-wrap select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.agent-assignment-select-wrap > svg {
+  position: absolute;
+  right: 12px;
+  pointer-events: none;
+  color: #9ca3af;
+}
+
+.agent-assignment-status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #86efac;
+  font-size: 12px;
+}
+
+.agent-assignment-status svg {
+  flex-shrink: 0;
+}

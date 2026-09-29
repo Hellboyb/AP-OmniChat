@@ -1,0 +1,6 @@
+mysql-data/
+backend/bin/
+backend/obj/
+node_modules/
+.env
+.env.*

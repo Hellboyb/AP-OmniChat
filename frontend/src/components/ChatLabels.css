@@ -1,0 +1,187 @@
+.chat-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.chat-labels-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.chat-labels-heading > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #e5e7eb;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.chat-labels-heading > span svg {
+  color: #fb923c;
+}
+
+.chat-labels-add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #d1d5db;
+  cursor: pointer;
+}
+
+.chat-labels-add:hover {
+  background: rgba(249, 115, 22, 0.16);
+  color: #fb923c;
+}
+
+.chat-labels-add:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.chat-labels-create {
+  display: flex;
+  gap: 8px;
+}
+
+.chat-labels-create input {
+  flex: 1;
+  min-width: 0;
+  padding: 9px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  outline: none;
+  background: #11151d;
+  color: #f9fafb;
+  font-size: 13px;
+}
+
+.chat-labels-create input:focus {
+  border-color: #f97316;
+}
+
+.chat-labels-create button {
+  padding: 0 13px;
+  border: 0;
+  border-radius: 8px;
+  background: #f97316;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.chat-labels-create button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.chat-labels-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chat-label-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.chat-label-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 10px;
+  border: 1px solid color-mix(in srgb, var(--label-color) 40%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--label-color) 10%, transparent);
+  color: #d1d5db;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.chat-label-chip.selected {
+  border-color: var(--label-color);
+  background: color-mix(in srgb, var(--label-color) 22%, transparent);
+  color: #fff;
+}
+
+.chat-label-chip:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.chat-label-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--label-color);
+}
+
+.chat-label-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #9ca3af;
+  cursor: pointer;
+}
+
+.chat-label-remove:hover {
+  background: rgba(248, 113, 113, 0.12);
+  color: #f87171;
+}
+
+.chat-label-remove:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.chat-labels-clear {
+  align-self: flex-start;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fb923c;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.chat-labels-clear:hover {
+  color: #fdba74;
+}
+
+.chat-labels-clear:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .chat-labels {
+    padding: 11px;
+  }
+
+  .chat-label-chip {
+    padding: 6px 9px;
+    font-size: 11px;
+  }
+}

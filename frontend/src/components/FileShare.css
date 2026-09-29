@@ -1,0 +1,141 @@
+.file-share {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.file-share-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #d1d5db;
+  cursor: pointer;
+}
+
+.file-share-trigger:hover {
+  background: rgba(249, 115, 22, 0.16);
+  color: #fb923c;
+}
+
+.file-share-trigger:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.file-share-preview {
+  position: absolute;
+  z-index: 30;
+  bottom: calc(100% + 12px);
+  left: 0;
+  width: min(340px, calc(100vw - 40px));
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  background: #151922;
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.4);
+  color: #f3f4f6;
+}
+
+.file-share-preview-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.file-share-preview-heading button {
+  border: 0;
+  background: transparent;
+  color: #fb923c;
+  cursor: pointer;
+}
+
+.file-share-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.file-share-item > svg {
+  flex-shrink: 0;
+  color: #fb923c;
+}
+
+.file-share-item-info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  gap: 3px;
+}
+
+.file-share-item-info span {
+  overflow: hidden;
+  color: #e5e7eb;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-share-item-info small {
+  color: #9ca3af;
+  font-size: 11px;
+}
+
+.file-share-item > button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: #9ca3af;
+  cursor: pointer;
+}
+
+.file-share-item > button:hover {
+  color: #f87171;
+}
+
+.file-share-send {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border: 0;
+  border-radius: 9px;
+  background: #f97316;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.file-share-send:hover {
+  background: #ea580c;
+}
+
+.file-share-send:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .file-share-preview {
+    left: -8px;
+    width: min(300px, calc(100vw - 28px));
+  }
+}

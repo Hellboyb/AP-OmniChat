@@ -1,0 +1,120 @@
+.connection-page {
+  width: 100%;
+}
+
+.security-banner {
+  display: flex;
+  gap: 15px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding: 18px;
+  border: 1px solid rgba(255, 106, 0, 0.2);
+  border-radius: 14px;
+  background: rgba(255, 106, 0, 0.05);
+  color: #ff7620;
+}
+
+.security-banner p {
+  margin-top: 5px;
+}
+
+.connection-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.connection-card {
+  padding: 22px;
+  border: 1px solid #232323;
+  border-radius: 17px;
+  background: linear-gradient(145deg, #131313, #0b0b0b);
+}
+
+.connection-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.connection-icon {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 15px;
+  background: rgba(255, 106, 0, 0.1);
+  color: #ff7620;
+}
+
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #777;
+  font-size: 10px;
+}
+
+.connection-status.connected {
+  color: #54d99b;
+}
+
+.connection-card h2 {
+  margin-top: 25px;
+}
+
+.connection-card p {
+  min-height: 60px;
+  line-height: 1.6;
+}
+
+.connection-actions {
+  margin-top: 20px;
+}
+
+.connection-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px;
+  border: 1px solid #303030;
+  border-radius: 10px;
+  background: #171717;
+  color: #ddd;
+  font-weight: 700;
+}
+
+.connection-button:hover:not(:disabled) {
+  border-color: #ff6800;
+  color: #ff7620;
+}
+
+.connection-button:disabled {
+  opacity: 0.6;
+}
+
+.connection-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 15px;
+  color: #555;
+  font-size: 10px;
+}
+
+.connection-loading {
+  min-height: 300px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 12px;
+  color: #777;
+}
+
+@media (max-width: 950px) {
+  .connection-grid {
+    grid-template-columns: 1fr;
+  }
+}
