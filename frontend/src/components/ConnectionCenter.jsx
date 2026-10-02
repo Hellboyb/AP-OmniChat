@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   Activity,
   AlertCircle,
+  Bot,
   Camera,
   CheckCircle2,
   Globe2,
@@ -148,6 +149,19 @@ const CHANNELS = [
   }
 ];
 
+const AI_PROVIDERS = [
+  {
+    id: "gemini",
+    name: "Google Gemini",
+    description: "Connect your own Gemini API key"
+  },
+  {
+    id: "openai",
+    name: "OpenAI / ChatGPT",
+    description: "Connect your own OpenAI API key"
+  }
+];
+
 function createInitialValues() {
   return CHANNELS.reduce((result, channel) => {
     result[channel.id] = {};
@@ -188,6 +202,13 @@ export default function ConnectionCenter() {
   const [activeAction, setActiveAction] = useState("");
   const [message, setMessage] = useState(null);
 
+  const [aiConnections, setAiConnections] = useState([]);
+  const [aiProvider, setAiProvider] = useState("gemini");
+  const [aiApiKey, setAiApiKey] = useState("");
+  const [aiKeyVisible, setAiKeyVisible] = useState(false);
+  const [aiLoading, setAiLoading] = useState(true);
+  const [aiAction, setAiAction] = useState("");
+
   async function loadConnections() {
     setLoading(true);
 
@@ -209,14 +230,45 @@ export default function ConnectionCenter() {
     }
   }
 
+  async function loadAiConnections() {
+    setAiLoading(true);
+
+    try {
+      const result = await api.get("/api/ai-connections");
+
+      const list = Array.isArray(result)
+        ? result
+        : result?.connections || [];
+
+      setAiConnections(list);
+    } catch (error) {
+      setMessage({
+        type: "error",
+        text: error.message || "Unable to load AI connection status."
+      });
+    } finally {
+      setAiLoading(false);
+    }
+  }
+
   useEffect(() => {
     loadConnections();
+    loadAiConnections();
   }, []);
 
   function getConnection(channelId) {
     return (
       connections.find((connection) => connection.channelId === channelId) ||
       null
+    );
+  }
+
+  function getAiConnection(provider) {
+    return (
+      aiConnections.find(
+        (connection) =>
+          connection.provider?.toLowerCase() === provider.toLowerCase()
+      ) || null
     );
   }
 
@@ -338,6 +390,85 @@ export default function ConnectionCenter() {
     }));
   }
 
+  async function connectAi() {
+    setMessage(null);
+
+    if (!aiApiKey.trim()) {
+      setMessage({
+        type: "error",
+        text: "Please enter your AI API key."
+      });
+
+      return;
+    }
+
+    setAiAction("connect");
+
+    try {
+      const result = await api.post(
+        "/api/ai-connections/connect",
+        {
+          provider: aiProvider,
+          apiKey: aiApiKey.trim()
+        }
+      );
+
+      await loadAiConnections();
+
+      setAiApiKey("");
+
+      setMessage({
+        type: result?.status === "Connected" ? "success" : "warning",
+        text:
+          result?.message ||
+          `${aiProvider} connection verification completed.`
+      });
+    } catch (error) {
+      setMessage({
+        type: "error",
+        text:
+          error.message ||
+          "Unable to connect the selected AI provider."
+      });
+    } finally {
+      setAiAction("");
+    }
+  }
+
+  async function disconnectAi(provider) {
+    setMessage(null);
+    setAiAction(`${provider}:disconnect`);
+
+    try {
+      const result = await api.post(
+        `/api/ai-connections/${provider}/disconnect`
+      );
+
+      await loadAiConnections();
+
+      setMessage({
+        type: "success",
+        text:
+          result?.message ||
+          `${provider} has been disconnected.`
+      });
+    } catch (error) {
+      setMessage({
+        type: "error",
+        text:
+          error.message ||
+          "Unable to disconnect the AI provider."
+      });
+    } finally {
+      setAiAction("");
+    }
+  }
+
+  const selectedAiConnection = getAiConnection(aiProvider);
+
+  const selectedAiConnected =
+    selectedAiConnection?.status?.toLowerCase() === "connected";
+
   return (
     <section className="connection-page">
       <div className="connection-hero">
@@ -357,10 +488,16 @@ export default function ConnectionCenter() {
 
         <button
           className="refresh-connections"
-          onClick={loadConnections}
-          disabled={loading}
+          onClick={() => {
+            loadConnections();
+            loadAiConnections();
+          }}
+          disabled={loading || aiLoading}
         >
-          <RefreshCw size={17} className={loading ? "spin" : ""} />
+          <RefreshCw
+            size={17}
+            className={loading || aiLoading ? "spin" : ""}
+          />
           Refresh Status
         </button>
       </div>
@@ -555,6 +692,198 @@ export default function ConnectionCenter() {
           );
         })}
       </div>
+
+      {/* AI CONNECTION */}
+      <section className="ai-connection-section">
+        <div className="ai-section-header">
+          <div>
+            <div className="connection-eyebrow">
+              <Bot size={15} />
+              AI AUTOMATION
+            </div>
+
+            <h2>Connect Your AI</h2>
+
+            <p>
+              Connect your own AI provider. This AI can later be used
+              to automatically reply to customer messages.
+            </p>
+          </div>
+
+          <div className="ai-status-badge">
+            <span
+              className={
+                selectedAiConnected ? "ai-dot connected" : "ai-dot"
+              }
+            />
+            {selectedAiConnected
+              ? "AI Connected"
+              : "AI Not connected"}
+          </div>
+        </div>
+
+        <div className="ai-connection-card">
+          <div className="ai-provider-area">
+            <div className="ai-provider-title">
+              <Bot size={20} />
+              <div>
+                <strong>AI Provider</strong>
+                <span>Select the AI you want AP-OmniChat to use.</span>
+              </div>
+            </div>
+
+            <div className="ai-provider-grid">
+              {AI_PROVIDERS.map((provider) => {
+                const connection =
+                  getAiConnection(provider.id);
+
+                const connected =
+                  connection?.status?.toLowerCase() ===
+                  "connected";
+
+                return (
+                  <button
+                    type="button"
+                    key={provider.id}
+                    className={`ai-provider-option ${
+                      aiProvider === provider.id
+                        ? "selected"
+                        : ""
+                    }`}
+                    onClick={() =>
+                      setAiProvider(provider.id)
+                    }
+                  >
+                    <div>
+                      <strong>{provider.name}</strong>
+                      <span>{provider.description}</span>
+                    </div>
+
+                    {connected && (
+                      <CheckCircle2 size={18} />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="ai-key-area">
+            <label className="api-field">
+              <span>
+                {aiProvider === "gemini"
+                  ? "Gemini API Key"
+                  : "OpenAI API Key"}
+              </span>
+
+              <div className="input-wrap">
+                <input
+                  type={
+                    aiKeyVisible ? "text" : "password"
+                  }
+                  value={aiApiKey}
+                  onChange={(event) =>
+                    setAiApiKey(event.target.value)
+                  }
+                  placeholder={
+                    aiProvider === "gemini"
+                      ? "Enter your Gemini API key"
+                      : "Enter your OpenAI API key"
+                  }
+                  autoComplete="off"
+                />
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setAiKeyVisible(
+                      (current) => !current
+                    )
+                  }
+                >
+                  {aiKeyVisible ? "Hide" : "Show"}
+                </button>
+              </div>
+            </label>
+
+            <div className="ai-key-note">
+              <ShieldCheck size={15} />
+
+              <span>
+                Your API key is encrypted by the backend and is
+                never returned to the frontend.
+              </span>
+            </div>
+          </div>
+
+          <div className="ai-card-footer">
+            {selectedAiConnected ? (
+              <button
+                className="disconnect-button"
+                type="button"
+                onClick={() =>
+                  disconnectAi(aiProvider)
+                }
+                disabled={
+                  aiAction === `${aiProvider}:disconnect`
+                }
+              >
+                {aiAction ===
+                `${aiProvider}:disconnect` ? (
+                  <Loader2
+                    size={17}
+                    className="spin"
+                  />
+                ) : (
+                  <Unplug size={17} />
+                )}
+
+                {aiAction ===
+                `${aiProvider}:disconnect`
+                  ? "Disconnecting..."
+                  : `Disconnect ${aiProvider === "gemini"
+                      ? "Gemini"
+                      : "OpenAI"}`}
+              </button>
+            ) : (
+              <button
+                className="connect-button ai-connect-button"
+                type="button"
+                onClick={connectAi}
+                disabled={aiAction === "connect"}
+              >
+                {aiAction === "connect" ? (
+                  <Loader2
+                    size={17}
+                    className="spin"
+                  />
+                ) : (
+                  <Link2 size={17} />
+                )}
+
+                {aiAction === "connect"
+                  ? "Verifying AI..."
+                  : `Connect ${
+                      aiProvider === "gemini"
+                        ? "Gemini"
+                        : "OpenAI"
+                    }`}
+              </button>
+            )}
+          </div>
+
+          {selectedAiConnection?.connectedAtUtc &&
+            selectedAiConnected && (
+              <div className="connected-info ai-connected-info">
+                <Activity size={15} />
+                {aiProvider === "gemini"
+                  ? "Gemini"
+                  : "OpenAI"}{" "}
+                is connected and verified by the backend.
+              </div>
+            )}
+        </div>
+      </section>
 
       <div className="connection-bottom-note">
         <ShieldCheck size={17} />

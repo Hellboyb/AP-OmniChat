@@ -1,5 +1,5 @@
 const API_BASE_URL = (
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:5202"
+  import.meta.env.VITE_API_BASE_URL || "https://ap-omnichat.onrender.com"
 ).replace(/\/+$/, "");
 
 const TOKEN_KEY = "ap_omnichat_token";

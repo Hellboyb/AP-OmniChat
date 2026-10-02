@@ -1038,8 +1038,8 @@ function SettingsPage({ preferences, setPreferences }) {
             <div className="info-row">
               <span>API Base</span>
               <strong>
-                {import.meta.env.VITE_API_BASE_URL || "http://localhost:5202"}
-              </strong>
+  {import.meta.env.VITE_API_BASE_URL || "https://ap-omnichat.onrender.com"}
+</strong>
             </div>
           </div>
         </div>

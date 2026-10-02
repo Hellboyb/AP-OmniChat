@@ -13,6 +13,8 @@ public class AppDbContext : IdentityDbContext<AppUser>
 
     public DbSet<Conversation> Conversations => Set<Conversation>();
 
+    public DbSet<AiConnection> AiConnections => Set<AiConnection>();
+
     public DbSet<Message> Messages => Set<Message>();
 
     public DbSet<MyChatMessage> MyChatMessages => Set<MyChatMessage>();
